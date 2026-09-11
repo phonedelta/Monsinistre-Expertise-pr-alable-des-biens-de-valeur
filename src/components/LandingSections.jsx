@@ -178,13 +178,26 @@ export function ProblemSection() {
             <Reveal
               key={problem.number}
               delay={index * 60}
-              className="ui-card problem-card h-full"
+              className="ui-card problem-card h-full group"
             >
-              <span className="icon-box">
-                <LucideIcon name={problem.icon} />
-              </span>
-              <h3>{problem.title}</h3>
-              <p>{problem.text}</p>
+              <img
+                src={problem.image}
+                alt={problem.alt}
+                width={800}
+                height={600}
+                sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 25vw"
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="problem-card-body">
+                <div className="problem-card-heading">
+                  <span className="icon-box">
+                    <LucideIcon name={problem.icon} />
+                  </span>
+                  <h3>{problem.title}</h3>
+                </div>
+                <p>{problem.text}</p>
+              </div>
             </Reveal>
           ))}
         </div>

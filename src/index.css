@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: 'Inter', system-ui, sans-serif;
-  --font-display: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  --font-display: 'Manrope', 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
   --color-primary: #7fd6ca;
   --color-primary-hover: #71bcb2;
   --color-accent: #b8ded8;
@@ -38,7 +38,7 @@
   --shadow-md: 0 8px 24px rgb(31 36 48 / 6%);
   --shadow-lg: 0 18px 48px rgb(127 214 202 / 16%);
   --font-sans: 'Inter', system-ui, sans-serif;
-  --font-display: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  --font-display: 'Manrope', 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
   font-family: var(--font-sans);
   color: var(--text);
   background: var(--bg);
@@ -154,7 +154,7 @@ label {
   color: var(--text);
   font-family: var(--font-display);
   font-size: clamp(1.75rem, 3.2vw, 2.5rem);
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.15;
   letter-spacing: -0.03em;
   text-wrap: balance;
@@ -325,7 +325,7 @@ label {
   color: var(--text);
   font-family: var(--font-display);
   font-size: clamp(1.8rem, 3.4vw, 2.85rem);
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.12;
   letter-spacing: -0.03em;
   text-wrap: balance;
@@ -492,7 +492,43 @@ label {
   display: flex;
   height: 100%;
   flex-direction: column;
-  padding: 1.25rem;
+  overflow: hidden;
+  padding: 0;
+}
+
+.problem-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center;
+  image-rendering: auto;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  transition: transform 700ms ease;
+}
+
+.problem-card:hover img {
+  transform: translateZ(0) scale(1.02);
+}
+
+.problem-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 1rem 1rem 1.2rem;
+}
+
+.problem-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.problem-card-heading .icon-box {
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 0.7rem;
 }
 
 .problem-card h3,
@@ -505,12 +541,17 @@ label {
   color: var(--text);
   font-family: var(--font-display);
   font-size: 1.05rem;
-  font-weight: 600;
+  font-weight: 800;
   line-height: 1.35;
+  letter-spacing: -0.02em;
 }
 
-.problem-card h3 {
-  font-size: 1.05rem;
+.problem-card-heading h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .problem-card p,
@@ -973,6 +1014,11 @@ input[type='radio'] + .choice-indicator {
     padding: 1.1rem;
   }
 
+  .problem-card {
+    padding: 0;
+  }
+
+  .problem-card-body,
   .asset-card-body {
     padding: 1rem 1.05rem 1.15rem;
   }
