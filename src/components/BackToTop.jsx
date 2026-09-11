@@ -5,7 +5,7 @@ export default function BackToTop() {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 500)
+    const onScroll = () => setVisible(window.scrollY > 400)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -18,7 +18,7 @@ export default function BackToTop() {
 
   return (
     <a
-      className={`back-to-top ${visible ? 'is-visible' : ''}`}
+      className={`back-to-top${visible ? ' is-visible' : ''}`}
       href="#accueil"
       aria-label="Revenir en haut de page"
       onClick={scrollTop}

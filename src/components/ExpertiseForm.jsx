@@ -239,7 +239,7 @@ export default function ExpertiseForm({ onRequestSubmit }) {
   return (
     <section
       id="expertise-form"
-      className="section-shell form-shell scroll-mt-24"
+      className="section-shell form-shell scroll-mt-8"
     >
       <div className="container-shell">
         <Reveal>

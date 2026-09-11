@@ -112,7 +112,7 @@ function SectionIntro({
 
 export function HeroSection() {
   return (
-    <section id="accueil" className="hero scroll-mt-20">
+    <section id="accueil" className="hero scroll-mt-8">
       <div className="container-shell hero-grid">
         <Reveal className="hero-copy relative z-10">
           <span className="section-eyebrow">Expertise préalable</span>
@@ -164,7 +164,7 @@ export function ProblemSection() {
   return (
     <section
       id="problematique"
-      className="section-shell scroll-mt-24 bg-[var(--bg-soft)]"
+      className="section-shell scroll-mt-8 bg-[var(--bg-soft)]"
     >
       <div className="container-shell">
         <SectionIntro
@@ -197,7 +197,7 @@ export function ExpertiseSection() {
   return (
     <section
       id="expertise-prealable"
-      className="section-shell scroll-mt-24 bg-white"
+      className="section-shell scroll-mt-8 bg-white"
     >
       <div className="container-shell expertise-layout">
         <Reveal className="group">
@@ -244,7 +244,7 @@ export function AssetsSection() {
   return (
     <section
       id="biens-concernes"
-      className="section-shell scroll-mt-24 bg-[var(--bg-soft)]"
+      className="section-shell scroll-mt-8 bg-[var(--bg-soft)]"
     >
       <div className="container-shell">
         <SectionIntro
@@ -286,7 +286,7 @@ export function AssetsSection() {
 
 export function BenefitsSection() {
   return (
-    <section id="benefices" className="section-shell scroll-mt-24 bg-white">
+    <section id="benefices" className="section-shell scroll-mt-8 bg-white">
       <div className="container-shell">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <SectionIntro
@@ -322,7 +322,7 @@ export function AudienceSection() {
   return (
     <section
       id="profils"
-      className="section-shell scroll-mt-24 bg-[var(--bg-soft)]"
+      className="section-shell scroll-mt-8 bg-[var(--bg-soft)]"
     >
       <div className="container-shell">
         <SectionIntro
@@ -356,7 +356,7 @@ export function AudienceSection() {
 
 export function ProcessSection() {
   return (
-    <section id="processus" className="section-shell scroll-mt-24 bg-white">
+    <section id="processus" className="section-shell scroll-mt-8 bg-white">
       <div className="container-shell">
         <SectionIntro
           eyebrow="Processus"
@@ -387,7 +387,7 @@ export function WhySection() {
   return (
     <section
       id="pourquoi-monsinistre"
-      className="section-shell scroll-mt-24 bg-[var(--bg-soft)]"
+      className="section-shell scroll-mt-8 bg-[var(--bg-soft)]"
     >
       <div className="container-shell why-layout">
         <Reveal className="group">

@@ -1,7 +1,6 @@
-import BackToTop from './components/BackToTop'
 import ExpertiseForm from './components/ExpertiseForm'
-import SiteFooter from './components/SiteFooter'
-import SiteHeader from './components/SiteHeader'
+import FixedCtaBar from './components/FixedCtaBar'
+import BackToTop from './components/BackToTop'
 import {
   AssetsSection,
   AudienceSection,
@@ -16,8 +15,7 @@ import {
 function App() {
   return (
     <>
-      <SiteHeader />
-      <main>
+      <main className="page-main">
         <HeroSection />
         <ProblemSection />
         <ExpertiseSection />
@@ -28,7 +26,7 @@ function App() {
         <WhySection />
         <ExpertiseForm />
       </main>
-      <SiteFooter />
+      <FixedCtaBar />
       <BackToTop />
     </>
   )
