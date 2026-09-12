@@ -36,28 +36,28 @@ export const problems = [
 export const assets = [
   {
     icon: 'Gem',
-    image: '/images/jewelry.jpg',
+    image: '/images/jewelry.png',
     alt: 'Bijoux et pièces précieuses',
     title: 'Bijoux & pièces précieuses',
     text: 'Bijoux, montres et autres pièces de valeur.',
   },
   {
     icon: 'Frame',
-    image: '/images/painting.jpg',
+    image: '/images/painting.png',
     alt: 'Tableau encadré',
     title: 'Tableaux',
     text: 'Œuvres picturales et collections nécessitant une évaluation spécifique.',
   },
   {
     icon: 'Palette',
-    image: '/images/art.jpg',
+    image: '/images/art.png',
     alt: 'Œuvre d’art sculpturale',
     title: 'Œuvres d’art',
     text: 'Pièces artistiques dont la valeur dépend de plusieurs critères.',
   },
   {
     icon: 'Watch',
-    image: '/images/objects.jpg',
+    image: '/images/objects.png',
     alt: 'Montre et objet de valeur',
     title: 'Objets & biens de valeur',
     text: 'Autres biens particuliers nécessitant une identification et une valorisation professionnelle.',

@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react'
-import { ArrowRight, Check, ClipboardList } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { ArrowLeft, ArrowRight, Check, ClipboardList } from 'lucide-react'
 import Reveal from './Reveal'
 import {
   assetOptions,
@@ -22,53 +22,107 @@ const initialValues = {
   timing: '',
 }
 
-const fieldTargets = {
-  fullName: 'fullName',
-  phone: 'phone',
-  city: 'city',
-  assetTypes: 'assetTypes-0',
-  assetCount: 'assetCount-0',
-  location: 'location-0',
-  motivation: 'motivation-0',
-  timing: 'timing-0',
-}
+const steps = [
+  {
+    id: 'fullName',
+    type: 'text',
+    question: 'Quel est votre nom et prénom ?',
+    label: 'Nom et prénom',
+    inputType: 'text',
+    autoComplete: 'name',
+    required: true,
+  },
+  {
+    id: 'phone',
+    type: 'text',
+    question: 'Quel est votre numéro de téléphone / WhatsApp ?',
+    label: 'Téléphone / WhatsApp',
+    inputType: 'tel',
+    autoComplete: 'tel',
+    required: true,
+  },
+  {
+    id: 'city',
+    type: 'text',
+    question: 'Dans quelle ville êtes-vous situé ?',
+    label: 'Ville',
+    inputType: 'text',
+    autoComplete: 'address-level2',
+    required: true,
+  },
+  {
+    id: 'assetTypes',
+    type: 'checkbox',
+    question: 'Quel type de bien souhaitez-vous faire expertiser ?',
+    options: assetOptions,
+    required: true,
+  },
+  {
+    id: 'assetCount',
+    type: 'radio',
+    question: 'Combien de biens souhaitez-vous faire expertiser ?',
+    options: countOptions,
+    required: true,
+  },
+  {
+    id: 'location',
+    type: 'radio',
+    question: 'Où se trouvent actuellement ces biens ?',
+    options: locationOptions,
+    required: true,
+  },
+  {
+    id: 'motivation',
+    type: 'radio',
+    question: 'Pourquoi souhaitez-vous réaliser cette expertise ?',
+    options: motivationOptions,
+    required: true,
+  },
+  {
+    id: 'documents',
+    type: 'checkbox',
+    question: 'Avez-vous déjà des documents concernant ces biens ?',
+    options: documentOptions,
+    required: false,
+  },
+  {
+    id: 'timing',
+    type: 'radio',
+    question: 'Quand souhaitez-vous réaliser l’expertise ?',
+    options: timingOptions,
+    required: true,
+  },
+]
 
-const fieldLabels = {
-  fullName: 'Nom et prénom',
-  phone: 'Téléphone / WhatsApp',
-  city: 'Ville',
-  assetTypes: 'Type de bien',
-  assetCount: 'Nombre de biens',
-  location: 'Localisation des biens',
-  motivation: 'Raison de l’expertise',
-  timing: 'Délai',
-}
-
-function validate(values) {
-  const errors = {}
-  if (!values.fullName.trim()) errors.fullName = 'Ce champ est obligatoire.'
-  if (!values.phone.trim()) {
-    errors.phone = 'Ce champ est obligatoire.'
-  } else if (!/^[+\d][\d\s().-]{6,}$/.test(values.phone.trim())) {
-    errors.phone = 'Veuillez saisir un numéro de téléphone valide.'
+function validateField(id, values) {
+  if (id === 'fullName') {
+    if (!values.fullName.trim()) return 'Ce champ est obligatoire.'
   }
-  if (!values.city.trim()) errors.city = 'Ce champ est obligatoire.'
-  if (!values.assetTypes.length) {
-    errors.assetTypes = 'Veuillez sélectionner une option.'
+  if (id === 'phone') {
+    if (!values.phone.trim()) return 'Ce champ est obligatoire.'
+    if (!/^[+\d][\d\s().-]{6,}$/.test(values.phone.trim())) {
+      return 'Veuillez saisir un numéro de téléphone valide.'
+    }
   }
-  if (!values.assetCount) {
-    errors.assetCount = 'Veuillez sélectionner une option.'
+  if (id === 'city') {
+    if (!values.city.trim()) return 'Ce champ est obligatoire.'
   }
-  if (!values.location) {
-    errors.location = 'Veuillez sélectionner une option.'
+  if (id === 'assetTypes' && !values.assetTypes.length) {
+    return 'Veuillez sélectionner une option.'
   }
-  if (!values.motivation) {
-    errors.motivation = 'Veuillez sélectionner une option.'
+  if (id === 'assetCount' && !values.assetCount) {
+    return 'Veuillez sélectionner une option.'
   }
-  if (!values.timing) {
-    errors.timing = 'Veuillez sélectionner une option.'
+  if (id === 'location' && !values.location) {
+    return 'Veuillez sélectionner une option.'
   }
-  return errors
+  if (id === 'motivation' && !values.motivation) {
+    return 'Veuillez sélectionner une option.'
+  }
+  if (id === 'timing' && !values.timing) {
+    return 'Veuillez sélectionner une option.'
+  }
+  return ''
 }
 
 function TextField({
@@ -83,8 +137,8 @@ function TextField({
 }) {
   return (
     <div className="form-field">
-      <label htmlFor={id}>
-        {label} <span aria-hidden="true">*</span>
+      <label className="sr-only" htmlFor={id}>
+        {label}
       </label>
       <input
         id={id}
@@ -99,6 +153,7 @@ function TextField({
         aria-invalid={Boolean(error)}
         aria-describedby={error ? `${id}-error` : undefined}
         className={error ? 'input-error' : ''}
+        placeholder={label}
       />
       {error && (
         <p className="field-error" id={`${id}-error`} role="alert">
@@ -111,7 +166,6 @@ function TextField({
 
 function ChoiceGroup({
   name,
-  legend,
   options,
   type,
   value,
@@ -126,9 +180,7 @@ function ChoiceGroup({
       aria-invalid={Boolean(error)}
       aria-describedby={error ? `${name}-error` : undefined}
     >
-      <legend>
-        {legend} {required && <span aria-hidden="true">*</span>}
-      </legend>
+      <legend className="sr-only">{name}</legend>
       <div className="choice-grid">
         {options.map((option, index) => {
           const id = `${name}-${index}`
@@ -170,29 +222,24 @@ function ChoiceGroup({
 
 export default function ExpertiseForm({ onRequestSubmit }) {
   const [values, setValues] = useState(initialValues)
-  const [errors, setErrors] = useState({})
-  const summaryRef = useRef(null)
+  const [stepIndex, setStepIndex] = useState(0)
+  const [error, setError] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+  const questionRef = useRef(null)
+
+  const totalSteps = steps.length
+  const step = steps[stepIndex]
+  const progress = Math.round(((stepIndex + 1) / totalSteps) * 100)
+  const isLastStep = stepIndex === totalSteps - 1
+
+  useEffect(() => {
+    questionRef.current?.focus()
+  }, [stepIndex])
 
   const setTextValue = (field) => (event) => {
     const nextValue = event.target.value
     setValues((current) => ({ ...current, [field]: nextValue }))
-    if (errors[field]) {
-      setErrors((current) => {
-        const nextErrors = { ...current }
-        delete nextErrors[field]
-        return nextErrors
-      })
-    }
-  }
-
-  const validateOnBlur = (field) => {
-    const fieldErrors = validate(values)
-    setErrors((current) => {
-      const nextErrors = { ...current }
-      if (fieldErrors[field]) nextErrors[field] = fieldErrors[field]
-      else delete nextErrors[field]
-      return nextErrors
-    })
+    if (error) setError('')
   }
 
   const toggleCheckbox = (field, option) => {
@@ -203,38 +250,62 @@ export default function ExpertiseForm({ onRequestSubmit }) {
         : [...selected, option]
       return { ...current, [field]: nextSelected }
     })
-    if (errors[field]) {
-      setErrors((current) => {
-        const nextErrors = { ...current }
-        delete nextErrors[field]
-        return nextErrors
-      })
-    }
+    if (error) setError('')
   }
 
   const selectRadio = (field, option) => {
     setValues((current) => ({ ...current, [field]: option }))
-    if (errors[field]) {
-      setErrors((current) => {
-        const nextErrors = { ...current }
-        delete nextErrors[field]
-        return nextErrors
-      })
-    }
+    if (error) setError('')
   }
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    const nextErrors = validate(values)
-    setErrors(nextErrors)
-
-    if (Object.keys(nextErrors).length) {
-      requestAnimationFrame(() => summaryRef.current?.focus())
+  const goNext = () => {
+    const fieldError = validateField(step.id, values)
+    if (fieldError) {
+      setError(fieldError)
       return
     }
 
-    onRequestSubmit?.(values)
+    if (isLastStep) {
+      onRequestSubmit?.(values)
+      setSubmitted(true)
+      return
+    }
+
+    setError('')
+    setStepIndex((current) => Math.min(current + 1, totalSteps - 1))
   }
+
+  const goBack = () => {
+    setError('')
+    setStepIndex((current) => Math.max(current - 1, 0))
+  }
+
+  const stepContent =
+    step.type === 'text' ? (
+      <TextField
+        id={step.id}
+        label={step.label}
+        type={step.inputType}
+        value={values[step.id]}
+        error={error}
+        onChange={setTextValue(step.id)}
+        autoComplete={step.autoComplete}
+      />
+    ) : (
+      <ChoiceGroup
+        name={step.id}
+        options={step.options}
+        type={step.type}
+        value={values[step.id]}
+        error={error}
+        required={step.required}
+        onChange={(option) =>
+          step.type === 'checkbox'
+            ? toggleCheckbox(step.id, option)
+            : selectRadio(step.id, option)
+        }
+      />
+    )
 
   return (
     <section
@@ -243,161 +314,99 @@ export default function ExpertiseForm({ onRequestSubmit }) {
     >
       <div className="container-shell">
         <Reveal>
-          <form className="form-card" onSubmit={handleSubmit} noValidate>
-            <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-              <div className="max-w-xl">
-                <span className="section-eyebrow">Demande d’expertise</span>
-                <h2 className="section-title">
-                  Demandez votre expertise préalable
-                </h2>
-                <p className="section-lead">
-                  Quelques informations nous permettent de comprendre votre
-                  patrimoine et votre besoin avant de vous contacter.
+          <div className="form-card wizard-card">
+            <div className="wizard-intro">
+              <span className="section-eyebrow">Demande d’expertise</span>
+              <h2 className="section-title">
+                Demandez votre expertise préalable
+              </h2>
+              <p className="section-lead">
+                Répondez étape par étape. Quelques informations suffisent pour
+                comprendre votre besoin.
+              </p>
+            </div>
+
+            {submitted ? (
+              <div className="wizard-success" role="status">
+                <div className="icon-box" aria-hidden="true">
+                  <Check size={22} />
+                </div>
+                <h3>Demande prête</h3>
+                <p>
+                  Merci. Vos informations sont enregistrées localement. Nous
+                  pourrons vous recontacter à partir de ces éléments.
                 </p>
               </div>
-              <div className="icon-box hidden h-14 w-14 sm:grid" aria-hidden="true">
-                <ClipboardList size={24} />
-              </div>
-            </div>
-
-            {Object.keys(errors).length > 0 && (
-              <div
-                ref={summaryRef}
-                className="error-summary"
-                role="alert"
-                tabIndex="-1"
-                aria-labelledby="error-summary-title"
+            ) : (
+              <form
+                className="wizard-form"
+                onSubmit={(event) => {
+                  event.preventDefault()
+                  goNext()
+                }}
+                noValidate
               >
-                <h3 id="error-summary-title">
-                  Veuillez corriger les champs suivants :
-                </h3>
-                <ul>
-                  {Object.keys(errors).map((field) => (
-                    <li key={field}>
-                      <a href={`#${fieldTargets[field]}`}>
-                        {fieldLabels[field]} : {errors[field]}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+                <div className="wizard-progress" aria-hidden="true">
+                  <div className="wizard-progress-meta">
+                    <span>
+                      Étape {stepIndex + 1} / {totalSteps}
+                    </span>
+                    <span>{progress}%</span>
+                  </div>
+                  <div className="wizard-progress-track">
+                    <div
+                      className="wizard-progress-fill"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                </div>
+
+                <div className="wizard-step" key={step.id}>
+                  <div className="wizard-step-head">
+                    <div
+                      className="icon-box wizard-step-icon"
+                      aria-hidden="true"
+                    >
+                      <ClipboardList size={18} />
+                    </div>
+                    <h3
+                      className="wizard-question"
+                      ref={questionRef}
+                      tabIndex={-1}
+                    >
+                      {step.question}
+                      {step.required ? (
+                        <span aria-hidden="true"> *</span>
+                      ) : null}
+                    </h3>
+                  </div>
+
+                  {stepContent}
+                </div>
+
+                <div className="wizard-nav">
+                  <button
+                    type="button"
+                    className="wizard-btn-back"
+                    onClick={goBack}
+                    disabled={stepIndex === 0}
+                  >
+                    <ArrowLeft size={16} aria-hidden="true" />
+                    Retour
+                  </button>
+
+                  <button type="submit" className="primary-cta wizard-btn-next">
+                    <span>
+                      {isLastStep
+                        ? 'Envoyer ma demande'
+                        : 'Continuer'}
+                    </span>
+                    <ArrowRight size={16} aria-hidden="true" />
+                  </button>
+                </div>
+              </form>
             )}
-
-            <div className="form-block">
-              <h3 className="form-block-title">Vos coordonnées</h3>
-              <div className="form-grid two">
-                <TextField
-                  id="fullName"
-                  label="Nom et prénom"
-                  value={values.fullName}
-                  error={errors.fullName}
-                  onChange={setTextValue('fullName')}
-                  onBlur={() => validateOnBlur('fullName')}
-                  autoComplete="name"
-                />
-                <TextField
-                  id="phone"
-                  label="Téléphone / WhatsApp"
-                  type="tel"
-                  value={values.phone}
-                  error={errors.phone}
-                  onChange={setTextValue('phone')}
-                  onBlur={() => validateOnBlur('phone')}
-                  autoComplete="tel"
-                />
-                <TextField
-                  id="city"
-                  label="Ville"
-                  value={values.city}
-                  error={errors.city}
-                  onChange={setTextValue('city')}
-                  onBlur={() => validateOnBlur('city')}
-                  autoComplete="address-level2"
-                />
-              </div>
-            </div>
-
-            <div className="form-block">
-              <h3 className="form-block-title">Vos biens</h3>
-              <div className="grid gap-5">
-                <ChoiceGroup
-                  name="assetTypes"
-                  legend="Quel type de bien souhaitez-vous faire expertiser ?"
-                  options={assetOptions}
-                  type="checkbox"
-                  value={values.assetTypes}
-                  error={errors.assetTypes}
-                  onChange={(option) => toggleCheckbox('assetTypes', option)}
-                  required
-                />
-                <ChoiceGroup
-                  name="assetCount"
-                  legend="Combien de biens souhaitez-vous faire expertiser ?"
-                  options={countOptions}
-                  type="radio"
-                  value={values.assetCount}
-                  error={errors.assetCount}
-                  onChange={(option) => selectRadio('assetCount', option)}
-                  required
-                />
-                <ChoiceGroup
-                  name="location"
-                  legend="Où se trouvent actuellement ces biens ?"
-                  options={locationOptions}
-                  type="radio"
-                  value={values.location}
-                  error={errors.location}
-                  onChange={(option) => selectRadio('location', option)}
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="form-block">
-              <h3 className="form-block-title">Votre besoin</h3>
-              <div className="grid gap-5">
-                <ChoiceGroup
-                  name="motivation"
-                  legend="Pourquoi souhaitez-vous réaliser cette expertise ?"
-                  options={motivationOptions}
-                  type="radio"
-                  value={values.motivation}
-                  error={errors.motivation}
-                  onChange={(option) => selectRadio('motivation', option)}
-                  required
-                />
-                <ChoiceGroup
-                  name="documents"
-                  legend="Avez-vous déjà des documents concernant ces biens ?"
-                  options={documentOptions}
-                  type="checkbox"
-                  value={values.documents}
-                  onChange={(option) => toggleCheckbox('documents', option)}
-                />
-                <ChoiceGroup
-                  name="timing"
-                  legend="Quand souhaitez-vous réaliser l’expertise ?"
-                  options={timingOptions}
-                  type="radio"
-                  value={values.timing}
-                  error={errors.timing}
-                  onChange={(option) => selectRadio('timing', option)}
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="mt-8 flex justify-center sm:justify-start">
-              <button className="primary-cta group w-full sm:w-auto" type="submit">
-                <span>Envoyer ma demande d’expertise</span>
-                <ArrowRight
-                  size={18}
-                  aria-hidden="true"
-                  className="transition-transform duration-300 group-hover:translate-x-0.5"
-                />
-              </button>
-            </div>
-          </form>
+          </div>
         </Reveal>
       </div>
     </section>

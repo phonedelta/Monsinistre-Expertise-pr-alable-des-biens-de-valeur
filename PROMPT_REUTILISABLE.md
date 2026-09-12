@@ -1,7 +1,9 @@
 # Prompt réutilisable — Landing page type Monsinistre
 
-Copie ce prompt pour générer un **nouveau projet identique en architecture**.  
-Change uniquement : **couleurs**, **textes métier**, **images**, **nom de marque**, **liens sociaux**.
+Copie ce prompt pour générer un **nouveau projet identique en architecture et en design**.  
+Change uniquement : **textes métier**, **images**, **nom de marque**, **liens sociaux**.
+
+**Ne change pas les couleurs** de la landing page : conserver la palette / les tokens du projet de référence.
 
 ---
 
@@ -11,23 +13,32 @@ Change uniquement : **couleurs**, **textes métier**, **images**, **nom de marqu
 # OBJECTIF
 
 Créer une landing page one-page moderne, premium, responsive, entièrement en français,
-en reprenant EXACTEMENT l’architecture et la structure UX du projet de référence décrit ci-dessous.
+en reprenant EXACTEMENT l’architecture, la structure UX et le design (y compris les couleurs)
+du projet de référence décrit ci-dessous.
 
 Je veux changer UNIQUEMENT :
-- les couleurs (palette)
 - les textes métier
 - les images
 - le nom de la marque
 - les liens réseaux sociaux
 
 NE PAS changer :
+- les couleurs / la palette / les tokens CSS
 - l’architecture des fichiers
 - la stack technique
 - l’ordre des sections
 - les patterns UI (Hero, cards, formulaire, barre CTA fixe, back-to-top)
 - le comportement des CTA (scroll vers le formulaire)
+- la typographie de base (Inter + Manrope)
+- les formes (rounded-full, cards, badges)
 
-Utiliser UI UX Pro Max pour harmoniser layout, contraste, responsive et densités.
+IMPORTANT :
+Reproduire les mêmes couleurs que le projet de référence.
+Ne pas inventer une nouvelle palette.
+Ne pas “rebrandir” les couleurs.
+
+Utiliser UI UX Pro Max pour harmoniser layout, contraste, responsive et densités
+SANS modifier la palette.
 
 ==================================================
 1. STACK TECHNIQUE (OBLIGATOIRE)
@@ -128,13 +139,12 @@ Layout desktop : 2 colonnes (texte gauche / image droite).
 Mobile : stack vertical, texte puis image.
 
 Contient :
-- badge pill (eyebrow) : ex. "Expertise préalable"
+- badge pill (eyebrow)
 - H1
 - sous-titre / lead
 - CTA principal → scroll vers #expertise-form
 - image dominante (carrée ou ratio fort, object-fit cover)
 - 2 mini cards flottantes (desktop) : icône + court texte
-  (ex. "Bijoux & patrimoine", "Avant l’assurance")
 
 ### B. PROBLÉMATIQUE (#problematique)
 - intro centrée (eyebrow + titre + sous-titre)
@@ -199,7 +209,7 @@ Border-top légère + soft shadow vers le haut
 Desktop (3 zones) :
 - GAUCHE : 3 icônes sociales circulaires (Instagram, Facebook, LinkedIn)
 - CENTRE : titre court + sous-texte
-- DROITE : bouton "Demander une expertise" → #expertise-form
+- DROITE : bouton CTA → #expertise-form
 
 Mobile :
 - icônes centrées
@@ -207,6 +217,8 @@ Mobile :
 - texte central masqué ou réduit pour rester compact
 
 Hauteur compacte (~64–84px desktop).
+
+Utiliser les couleurs EXISTANTES du design system (pas de nouvelles couleurs).
 
 ==================================================
 6. BACK TO TOP
@@ -217,15 +229,15 @@ Hauteur compacte (~64–84px desktop).
 - apparaît après ~400px de scroll
 - positionné bas-droite, AU-DESSUS de la barre CTA
 - scroll smooth vers #accueil
+- couleur = primary existante
 
 ==================================================
-7. DESIGN SYSTEM
+7. DESIGN SYSTEM (À REPRODUIRE, PAS À RÉINVENTER)
 ==================================================
 
 ### Typographie
 - Corps : Inter
-- Titres : Manrope (ou équivalent display moderne), font-weight 700–800
-- Pas de serif obligatoire
+- Titres : Manrope, font-weight 700–800
 
 ### Formes
 - cards : border-radius ~1.25rem
@@ -244,47 +256,28 @@ Hauteur compacte (~64–84px desktop).
 
 ### Comportements
 - hover cards : légère élévation + border accent
-- hover CTA : couleur plus foncée
+- hover CTA : légère variation (token hover existant)
 - smooth scroll
 - responsive breakpoints : 640 / 768 / 1024 / 1280
 - overflow-x: hidden
 - safe-area insets pour mobile
 
 ==================================================
-8. VARIABLES COULEURS À PERSONNALISER
+8. COULEURS — NE PAS MODIFIER
 ==================================================
 
-Dans :root / @theme, remplacer UNIQUEMENT ces tokens :
+Conserver EXACTEMENT la palette / les tokens du projet de référence.
 
---primary:            #XXXXXX   /* bouton principal */
---primary-hover:      #XXXXXX   /* hover bouton */
---primary-mid:        #XXXXXX   /* variante */
---primary-dark:       #XXXXXX   /* accents forts / focus */
---mint-border / accent-border: #XXXXXX  /* badges, contours */
---mint-text / accent-text:     #XXXXXX  /* texte badge / icônes */
---mint-text-2:        #XXXXXX   /* texte secondary accent */
---bg:                 #FFFFFF
---bg-soft:            #XXXXXX   /* sections alternées */
---bg-tint:            #XXXXXX   /* fonds très légers */
---text:               #XXXXXX   /* titres */
---muted:              #XXXXXX   /* paragraphes */
---border:             #XXXXXX
---btn-text:           #XXXXXX   /* texte sur bouton clair */
+NE PAS :
+- changer --primary / --bg / --text / etc.
+- inventer une nouvelle charte
+- remplacer le turquoise/vert d’eau par une autre famille de couleurs
 
-Règles accessibilité :
-- si primary est clair → texte bouton foncé (pas blanc)
-- contrastes textes >= lisibilité WCAG raisonnable
+Si le projet est cloné depuis Monsinistre :
+garder les tokens déjà présents dans index.css (:root / @theme).
 
-Exemple actuel (référence Monsinistre turquoise) :
---primary: #7fd6ca
---primary-hover: #71bcb2
---primary-dark: #569a9b
---mint-border: #94cbc2
---mint-text: #4a9696
---text: #1F3334
---muted: #667879
---bg-soft: #f5fbfa
---bg-tint: #eaf7f5
+Les seuls changements autorisés concernent le contenu et les médias,
+pas le style couleur.
 
 ==================================================
 9. CONTENU À PERSONNALISER (landingContent.js)
@@ -347,6 +340,7 @@ Vérifier :
 - barre fixe non invasive
 - back-to-top non chevauchant
 - aucun overflow horizontal
+- couleurs inchangées vs référence
 
 ==================================================
 13. LIVRABLE
@@ -354,17 +348,17 @@ Vérifier :
 
 1. Initialiser Vite React + Tailwind dans le dossier
 2. Reproduire l’architecture ci-dessus
-3. Brancher le contenu depuis landingContent.js
-4. Appliquer MA palette (tokens)
+3. Reprendre le design system et les couleurs du projet de référence
+4. Brancher le contenu depuis landingContent.js
 5. Intégrer MES images
 6. Remplacer MES textes
 7. npm run build doit passer
 
 À la fin, indiquer :
 - fichiers créés
-- tokens couleurs utilisés
+- confirmation que les couleurs n’ont pas été modifiées
 - id du formulaire
-- comment changer texte / couleurs / images en 3 minutes
+- comment changer texte / images en 3 minutes (sans toucher aux couleurs)
 ```
 
 ---
@@ -372,19 +366,20 @@ Vérifier :
 ## COMMENT UTILISER CE PROMPT
 
 1. Copie le bloc `PROMPT À COPIER`.
-2. Remplace la section **8** par ta nouvelle palette.
-3. Remplace la section **9** par tes textes (ou joins un brief métier).
-4. Place tes images dans `public/images/` avec les mêmes rôles.
-5. Lance la génération du projet.
+2. Remplace la section **9** par tes textes (ou joins un brief métier).
+3. Place tes images dans `public/images/` avec les mêmes rôles.
+4. Lance la génération du projet.
+5. **Ne fournis pas de nouvelle palette** : les couleurs restent celles de la référence.
 
 ## CHANGEMENTS RAPIDES SUR UN PROJET EXISTANT
 
 | Élément | Fichier |
 | --- | --- |
 | Textes / options formulaire / chemins images | `src/data/landingContent.js` |
-| Couleurs globales | `src/index.css` (`:root` + `@theme`) |
 | Images | `public/images/` |
 | Logo / favicon | `public/logo.png`, `public/favicon.png` |
 | Ordre des sections | `src/App.jsx` |
 | Barre fixe + réseaux | `src/components/FixedCtaBar.jsx` |
 | Formulaire | `src/components/ExpertiseForm.jsx` |
+
+> Les couleurs (`src/index.css` tokens) ne doivent **pas** être modifiées.

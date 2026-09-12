@@ -283,10 +283,12 @@ export function AssetsSection() {
                 decoding="async"
               />
               <div className="asset-card-body">
-                <span className="icon-box">
-                  <LucideIcon name={asset.icon} />
-                </span>
-                <h3>{asset.title}</h3>
+                <div className="asset-card-heading">
+                  <span className="icon-box">
+                    <LucideIcon name={asset.icon} />
+                  </span>
+                  <h3>{asset.title}</h3>
+                </div>
                 <p>{asset.text}</p>
               </div>
             </Reveal>
