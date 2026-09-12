@@ -122,7 +122,7 @@ DROITE : bouton "Demander une expertise"
 URLs sociales (si disponibles dans le projet) :
 - https://www.instagram.com/monsinistrema/
 - https://www.facebook.com/monsinistrema/
-- https://www.linkedin.com/company/111123138/
+- https://www.linkedin.com/company/monsinistre/
 
 Sinon : réutiliser les URLs déjà présentes, sans inventer.
 

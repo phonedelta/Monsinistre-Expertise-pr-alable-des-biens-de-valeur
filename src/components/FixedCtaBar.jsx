@@ -42,7 +42,7 @@ const socialNetworks = [
   {
     name: 'LinkedIn',
     Icon: LinkedInIcon,
-    href: 'https://www.linkedin.com/company/111123138/',
+    href: 'https://www.linkedin.com/company/monsinistre/',
   },
 ]
 
